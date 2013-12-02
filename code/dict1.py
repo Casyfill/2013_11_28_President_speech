@@ -38,6 +38,7 @@ def generateFDict(filename):
 	hello_pattern = re.compile( u'([А-Яа-я]+)', re.UNICODE )
 	Wlist = hello_pattern.findall( text )
 
+	print filename.split('/')[-1].split('.')[0], ':', len(Wlist)
 	# ПЕЧАТАЕМ
 	# for l in Wlist:
 	# 	word = unicode(l).lower()
@@ -66,33 +67,38 @@ def generateFDict(filename):
 		# print key , ':', (', ').join(Text_Dict[key])
 		rString =  key + '|' + str(Text_Dict[key]['count'])  + '|' + (',').join(Text_Dict[key]['dict'])
 		# print rString
-	# 	rString+='\n'
+		rString= rString + '\n'
 		resList.append(rString.encode('utf-8'))
 
-	# resList[-1].replace('\n','')
+	resList[-1].replace('\n','')
 	return resList
 	pass
 
 
 # создаем список файлов в папке
+
+fileList = []
 basePath = "/Users/andy/Dropbox/Projects/Kats/RIA/2013_11_28_President_speech/texts/"
 os.chdir(basePath)
 for files in os.listdir("."):
-	filename = basePath + files
-	print files
+	if files[-3:] =='txt':
+		filename = basePath + files
+		# print 'файл: ', files
+		fileList.append(filename)
 
+for files in fileList:
 	# для каждого файлв узнаем имя и создае словарь
-	n = name(filename)
+	n = name(files)
 
-	result = generateFDict(filename)
+	result = generateFDict(files)
 
 	#  для каждого файла сохраняем словарик
 	workfile ='/Users/andy/Dropbox/Projects/Kats/RIA/2013_11_28_President_speech/Dicts/' + n
 
 	f = open(workfile, 'w')
-	write_data = f.writelines(resList)
+	write_data = f.writelines(result)
 	f.closed
-	print n, ' done'
+	# print n, ' done'
 
 print 'all functions are done'
 
